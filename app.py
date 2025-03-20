@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from domain import OKXAccountAPI
+from application.sma_strategy.sma_strategy import back_test
 
 app = Flask(__name__)
 
@@ -7,10 +7,14 @@ app = Flask(__name__)
 def home():
     return jsonify({"message": "Welcome to Quant Trading System"})
 
-@app.route('/instruments/<inst_type>')
-def instruments(inst_type: str):
-    okx_account_api = OKXAccountAPI()
-    return okx_account_api.instruments(inst_type=inst_type)
+@app.route('/test')
+def test():
+    result, buy_log, sell_log = back_test()
+    print(result)
+    print(buy_log)
+    print(sell_log)
+    return {}
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
